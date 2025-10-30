@@ -1,5 +1,12 @@
 #!/bin/bash
 
+function exit_exception () {
+if [ $? -eq 130 ]; then
+	echo "Exiting..."
+	exit 1
+fi	
+}
+
 function switch_branch (){
 
 selected=$(git branch | fzf +m \
@@ -10,13 +17,7 @@ selected=$(git branch | fzf +m \
  	--color bg:#222222,preview-bg:#333333
 	)
 	
-echo "> $?"	
-	
-if [ $? -eq 130 ]; then
-	echo "Exiting..."
-	exit 1
-fi	
-	
+exit_exception	
 selected=$(echo $selected | tr -d "* ")
 echo "Selected branch: $selected \n"
 git switch "$selected"
